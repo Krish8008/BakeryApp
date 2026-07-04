@@ -122,7 +122,7 @@ router.post("/logout", (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: "Logged out successfully",
+    message: "Logged out successfullly",
   });
 });
 

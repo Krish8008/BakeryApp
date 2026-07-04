@@ -13,6 +13,7 @@ import BuyCake from "./Pages/cakeBooking";
 import PageNotFound from "./Pages/PageNotFound";
 import MyBookings from "./Pages/MyBookings";
 import AdminOrders from "./Pages/AdminOrders";
+import Profile from "./Pages/Profile";
 
 
 function App() {
@@ -31,14 +32,13 @@ function App() {
         <Route path="/cakes" element={<Cakes />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="*" element={<PageNotFound/>} />
         <Route path="/my-bookings" element={<MyBookings />} />
         <Route path="/admin/orders" element={<AdminOrders />} />
+        <Route path="/profile" element={<Profile/>} />
+        <Route path="*" element={<PageNotFound/>} />
         
         {/*  
         <Route path="/custom-orders" element={<CustomOrders />} />
-        
-        
         <Route path="/order" element={<Order />} /> */}
       </Routes>
     </BrowserRouter>

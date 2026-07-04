@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
 const AddCake = () => {
+  
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user") || "null");
@@ -119,6 +120,9 @@ if (user?.role !== "admin") {
       );
 
       const data = await response.json();
+      
+      console.log("response", response);
+      console.log("data", data);
 
       if (response.ok) {
         alert("Cake Added Successfully!");

@@ -46,6 +46,39 @@ const fetchCake = async () => {
     const handleSubmit = async (e) => {
   e.preventDefault();
 
+  if(Number(formData.quantity) < 1){
+      alert("Quntity must be at least 1")
+  }
+
+  if (!formData.deliveryAddress.trim()) {
+    return alert("Delivery address is required");
+  }
+
+  // Phone
+  if (!formData.phone.trim()) {
+    return alert("Phone number is required");
+  }
+
+  // Phone validation
+  if (!/^[6-9]\d{9}$/.test(formData.phone)) {
+    return alert("Enter a valid 10-digit phone number");
+  }
+
+  // Delivery Date
+  if (!formData.deliveryDate) {
+    return alert("Please select delivery date");
+  }
+
+  const selectedDate = new Date(formData.deliveryDate);
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+  if (selectedDate < today) {
+    return alert("Delivery date cannot be in the past");
+  }
+
+
   try {
     const token = localStorage.getItem("token");
     console.log("token", token);

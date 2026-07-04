@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, Cake } from "lucide-react";
+import { Menu, X, Cake, UserCircle  } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+
   const navigate = useNavigate();   
   const token = localStorage.getItem("token");
 
@@ -86,13 +88,79 @@ const Navbar = () => {
             </Link>
 
             {token ? (
-              <button className="text-gray-700 hover:text-pink-600 font-medium" onClick={logout}>Logout</button>
-            ) : (
-            <>
-              <Link className="text-gray-700 hover:text-pink-600 font-medium" to="/login">Login</Link>
-              <Link className="text-gray-700 hover:text-pink-600 font-medium" to="/signup">Signup</Link>
-            </>
-          )}
+  <div className="relative">
+
+    <button
+      onClick={() => setShowProfile(!showProfile)}
+      className="flex items-center gap-2"
+    >
+      <UserCircle size={34} />
+
+      <span className="font-medium">
+        {user?.name}
+      </span>
+    </button>
+
+    {showProfile && (
+      <div className="absolute right-0 mt-3 w-60 bg-white shadow-xl rounded-xl border">
+
+        <div className="p-4 border-b">
+
+          <h3 className="font-bold">
+            {user?.name}
+          </h3>
+
+          <p className="text-gray-500 text-sm">
+            {user?.email}
+          </p>
+
+          <p className="text-pink-600 text-sm mt-1">
+            {user?.role.toUpperCase()}
+          </p>
+
+        </div>
+
+        <Link
+          to="/profile"
+          className="block px-4 py-3 hover:bg-pink-50"
+        >
+          My Profile
+        </Link>
+
+        <Link
+          to="/my-bookings"
+          className="block px-4 py-3 hover:bg-pink-50"
+        >
+          My Orders
+        </Link>
+
+        {user?.role === "admin" && (
+          <Link
+            to="/admin/orders"
+            className="block px-4 py-3 hover:bg-pink-50"
+          >
+            Admin Orders
+          </Link>
+        )}
+
+        <button
+          onClick={logout}
+          className="w-full text-left px-4 py-3 text-red-500 hover:bg-red-50"
+        >
+          Logout
+        </button>
+
+      </div>
+    )}
+
+  </div>
+) : (
+  <>
+    <Link to="/login">Login</Link>
+
+    <Link to="/signup">Signup</Link>
+  </>
+)}
 
           </div>
 
