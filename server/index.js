@@ -7,6 +7,7 @@ const productRoutes = require("./routes/product");
 const authRoutes = require("./routes/auth");
 const bookingRoutes = require("./routes/bookingRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api", productRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/chat", chatRoutes);
 
 
 // MongoDB Connection
