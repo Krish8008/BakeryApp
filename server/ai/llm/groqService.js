@@ -1,14 +1,22 @@
 const groq = require("../../config/groq");
+const systemPrompt = require("../prompts/systemPrompts");
 
-async function generateResponse(message) {
+
+async function generateResponse(history) {
+
+    const messages = history.map(msg => ({
+        role: msg.role,
+        content: msg.content,
+    }));
 
     const response = await groq.chat.completions.create({
         model: "llama-3.3-70b-versatile",
         messages: [
             {
-                role: "user",
-                content: message,
+                role: "system",
+                content: systemPrompt,
             },
+            ...messages,
         ],
     });
 

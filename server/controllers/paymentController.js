@@ -17,6 +17,8 @@ module.exports.createOrder = async (req, res) => {
 
     const order = await razorpay.orders.create(options);
 
+    //console.log("order - ", order);
+
     res.status(200).json({
       success: true,
       order,
