@@ -1,11 +1,17 @@
 const Conversation = require("../../models/Conversation")
 
 async function getHistory(sessionId) {
+
     const conversation = await Conversation.findOne({ sessionId });
+
     if (!conversation) {
         return [];
     }
-    return conversation.messages;
+
+    return conversation.messages.map(message => ({
+        role: message.role,
+        content: message.content,
+    }));
 }
 
 async function addMessage(sessionId, role, content) {
