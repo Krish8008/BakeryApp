@@ -29,6 +29,11 @@ async function addMessage(sessionId, role, content) {
         content,
     });
 
+    if (conversation.messages.length > 30) {
+        conversation.messages =
+            conversation.messages.slice(-30);
+    }
+
     await conversation.save();
 
 }
