@@ -4,7 +4,6 @@ const conversationService = require("../ai/conversation/conversationService");
 async function chat(req, res) {
     
     
-
     try {
         const { sessionId, message } = req.body;
 
@@ -33,7 +32,6 @@ async function chat(req, res) {
             success: false,
             message: "Something went wrong",
         });
-
     }
 
 }

@@ -20,15 +20,11 @@ function chunkText(text, chunkSize = 500) {
     for (const paragraph of paragraphs) {
 
         if ((currentChunk + paragraph).length < chunkSize) {
-
             currentChunk += paragraph + "\n\n";
-
         } else {
-
             if (currentChunk) {
                 chunks.push(currentChunk.trim());
             }
-
             currentChunk = paragraph + "\n\n";
         }
     }
