@@ -32,7 +32,7 @@ const Navbar = ({ setToken, setUser }) => {
           <Link to="/" className="flex items-center gap-2">
             <Cake className="text-pink-600 w-8 h-8" />
             <h1 className="text-2xl font-bold text-pink-600">
-              Sweet Cakes
+              CakeCraft
             </h1>
           </Link>
 

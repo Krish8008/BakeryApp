@@ -21,7 +21,7 @@ function Home() {
       <section className="relative h-[90vh] flex items-center justify-center bg-gradient-to-r from-pink-600 to-rose-500">
         <div className="text-center text-white px-6">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            Cakes By
+            Cakes By CakeCraft
           </h1>
 
           <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8">
