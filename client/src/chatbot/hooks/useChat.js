@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { sendMessage as sendMessageAPI, fetchHistory } from "../services/chatApi";
 
 
-export function useChat() {
+export function useChat(user) {
+
+    
 
     const [messages, setMessages] = useState([
         {
@@ -18,18 +20,14 @@ export function useChat() {
 useEffect(() => {
 
     async function loadHistory() {
-
-
+        if (!user) return;
         try {
 
             const history = await fetchHistory();
-
             console.log("History received:", history);
 
             if (history.length === 0) {
-
                 console.log("No history found");
-
                 setMessages([
                     {
                         role: "assistant",
@@ -39,23 +37,18 @@ useEffect(() => {
                 ]);
 
             } else {
-
                 console.log("Setting messages...");
                 setMessages(history);
-
             }
 
         } catch (err) {
-
             console.error("History Error:", err);
-
         }
-
     }
 
     loadHistory();
 
-}, []);
+}, [user]);
 
 
 

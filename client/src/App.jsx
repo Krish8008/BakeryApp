@@ -26,9 +26,13 @@ function App() {
     localStorage.getItem("token")
 );
 
+const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user"))
+);
+
   return (
     <BrowserRouter>
-      <Navbar setToken={setToken}  />
+      <Navbar setToken={setToken} setUser={setUser}  />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -39,8 +43,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cakes" element={<Cakes />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login setToken={setToken}  />} />
+        <Route path="/signup" element={<Signup/>} />
+        <Route path="/login" element={<Login setToken={setToken} setUser={setUser}  />} />
         <Route path="/my-bookings" element={<MyBookings />} />
         <Route path="/admin/orders" element={<AdminOrders />} />
         <Route path="/profile" element={<Profile/>} />
@@ -52,7 +56,7 @@ function App() {
         <Route path="/custom-orders" element={<CustomOrders />} />
         <Route path="/order" element={<Order />} /> */}
       </Routes>
-       {token && <ChatWidget/>} 
+       {token && <ChatWidget user={user}/>} 
     </BrowserRouter>
   );
 }

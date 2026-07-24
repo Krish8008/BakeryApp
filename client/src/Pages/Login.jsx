@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
-function Login({setToken}) {
+function Login({setToken, setUser}) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [user, setUser] = useState({
+  const [user, setUserr] = useState({
     email: "",
     password: "",
   });
@@ -13,7 +13,7 @@ function Login({setToken}) {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setUser({
+    setUserr({
       ...user,
       [e.target.name]: e.target.value,
     });
@@ -41,6 +41,7 @@ function Login({setToken}) {
       if (data.success) {
         localStorage.setItem("token", data.token);
         setToken(data.token);
+        setUser(data.user);
 
         localStorage.setItem(
           "user",
@@ -48,6 +49,7 @@ function Login({setToken}) {
         );
 
       alert("Login Successful");
+
 
       // Redirect to the page the user originally wanted
       const redirectTo = location.state?.from || "/";

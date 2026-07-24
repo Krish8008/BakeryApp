@@ -4,7 +4,7 @@ import { Menu, X, Cake, UserCircle  } from "lucide-react";
 
 
 
-const Navbar = ({ setToken }) => {
+const Navbar = ({ setToken, setUser }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
@@ -19,7 +19,7 @@ const Navbar = ({ setToken }) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-
+    setUser(null);
     alert("logout successful...!");
     navigate("/login");
   };

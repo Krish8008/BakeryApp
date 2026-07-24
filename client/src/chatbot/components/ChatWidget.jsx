@@ -4,7 +4,7 @@ import ChatWindow from "./ChatWindow";
 import { useChat } from "../hooks/useChat";
 
 
-function ChatWidget() {
+function ChatWidget({user}) {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -12,7 +12,7 @@ function ChatWidget() {
         messages,
         loading,
         sendMessage,
-    } = useChat();
+    } = useChat(user);
 
     return (
         <>
