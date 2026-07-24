@@ -5,7 +5,6 @@ import { API_URL } from "../config/api";
 function Cakes() {
   const [cakes, setCakes] = useState([]);
   const [loading, setLoading] = useState(true);
-  alert(API_URL )
 
   useEffect(() => {
     fetchCakes();
