@@ -16,7 +16,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://YOUR-FRONTEND.onrender.com",
+      "https://bakeryapp-client.onrender.com",
     ],
     credentials: true,
   })

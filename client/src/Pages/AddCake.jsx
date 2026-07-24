@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
+import { API_URL } from "../config/api";
 
 const AddCake = () => {
   
@@ -112,7 +113,7 @@ if (user?.role !== "admin") {
       });
 
       const response = await fetch(
-        "http://localhost:5000/api/cakes",
+        `${API_URL}/api/cakes`,
         {
           method: "POST",
           body: formData,

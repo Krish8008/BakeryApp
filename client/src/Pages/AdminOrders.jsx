@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../config/api";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -13,7 +14,7 @@ const AdminOrders = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/bookings/all",
+        `${API_URL}/api/bookings/all`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -35,7 +36,7 @@ const AdminOrders = () => {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        `http://localhost:5000/api/bookings/${bookingId}/status`,
+        `${API_URL}/api/bookings/${bookingId}/status`,
         {
           orderStatus: status,
         },

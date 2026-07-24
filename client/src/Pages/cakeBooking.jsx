@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../config/api";
 
 const BuyCake = () => {
 
@@ -25,7 +26,7 @@ const fetchCake = async () => {
     //console.log("Cake ID:", id);
 
     const res = await axios.get(
-      `http://localhost:5000/api/cakes/${id}`
+      `${API_URL}/api/cakes/${id}`
     );
 
     //console.log("Response:", res.data);
@@ -88,7 +89,7 @@ const fetchCake = async () => {
 
     // Create Razorpay Order
     const { data } = await axios.post(
-      "http://localhost:5000/api/payment/create-order",
+      `${API_URL}/api/payment/create-order`,
       {
         amount: totalAmount,
       },
@@ -118,7 +119,7 @@ handler: async function (response) {
     const token = localStorage.getItem("token");
 
     const verify = await axios.post(
-      "http://localhost:5000/api/payment/verify",
+      `${API_URL}/api/payment/verify`,
       
       {
         razorpay_order_id: response.razorpay_order_id,

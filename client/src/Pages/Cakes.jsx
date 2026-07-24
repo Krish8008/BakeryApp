@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { API_URL } from "../config/api";
 
 function Cakes() {
   const [cakes, setCakes] = useState([]);
   const [loading, setLoading] = useState(true);
+  alert(API_URL )
 
   useEffect(() => {
     fetchCakes();
@@ -13,7 +15,7 @@ function Cakes() {
     
     try {
       const response = await fetch(
-        "http://localhost:5000/api/cakes"
+        `${API_URL}/api/cakes`
       );
 
       const data = await response.json();

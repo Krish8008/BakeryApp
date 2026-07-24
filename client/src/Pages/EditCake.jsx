@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { API_URL } from "../config/api";
 
 function EditCake() {
   const { id } = useParams();
@@ -25,7 +26,7 @@ function EditCake() {
   const fetchCake = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/cakes/${id}`
+        `${API_URL}/api/cakes/${id}`
       );
 
       const data = await response.json();
@@ -83,7 +84,7 @@ function EditCake() {
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/cakes/${id}`,
+        `${API_URL}/api/cakes/${id}`,
         {
           method: "PUT",
           body: formData,

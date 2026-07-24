@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { API_URL } from "../config/api";
 
 function ShowCake() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function ShowCake() {
   const isAdmin = user?.role === "admin";
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/cakes/${id}`)
+    fetch(`${API_URL}/api/cakes/${id}`)
       .then((res) => res.json())
       .then((data) => setCake(data.cake))
       .catch((err) => console.log(err));
@@ -29,7 +30,7 @@ function ShowCake() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/cakes/${id}/delete`,
+        `${API_URL}/api/cakes/${id}/delete`,
         {
           method: "DELETE",
           headers: {

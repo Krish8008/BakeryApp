@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import { API_URL } from "../config/api";
 
 function Login({setToken, setUser}) {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function Login({setToken, setUser}) {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/login",
+        `${API_URL}/api/auth/login`,
         {
           method: "POST",
           headers: {
