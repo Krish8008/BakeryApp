@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, Cake, UserCircle  } from "lucide-react";
 
-const Navbar = () => {
+
+
+const Navbar = ({ setToken }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
@@ -17,6 +19,7 @@ const Navbar = () => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
     alert("logout successful...!");
     navigate("/login");
   };

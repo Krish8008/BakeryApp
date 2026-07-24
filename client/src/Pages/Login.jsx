@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 
-function Login() {
+function Login({setToken}) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -40,6 +40,7 @@ function Login() {
 
       if (data.success) {
         localStorage.setItem("token", data.token);
+        setToken(data.token);
 
         localStorage.setItem(
           "user",

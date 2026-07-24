@@ -13,7 +13,6 @@ async function chatOrchestrator(history) {
     // 1. Detect Intent
     const intent = await detectIntent(question);
 
-
     // 2. Retrieve Product Context
     let productContext = "";
 

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 import Navbar from "./Pages/Navbar";
 import Home from "./Pages/Home";
@@ -15,12 +16,19 @@ import PageNotFound from "./Pages/PageNotFound";
 import MyBookings from "./Pages/MyBookings";
 import AdminOrders from "./Pages/AdminOrders";
 import Profile from "./Pages/Profile";
+import ChatWidget from "./chatbot/components/ChatWidget";
+
 
 
 function App() {
+
+  const [token, setToken] = useState(
+    localStorage.getItem("token")
+);
+
   return (
     <BrowserRouter>
-      <Navbar />
+      <Navbar setToken={setToken}  />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -32,16 +40,19 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/cakes" element={<Cakes />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login setToken={setToken}  />} />
         <Route path="/my-bookings" element={<MyBookings />} />
         <Route path="/admin/orders" element={<AdminOrders />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="*" element={<PageNotFound/>} />
         
+        
+        
         {/*  
         <Route path="/custom-orders" element={<CustomOrders />} />
         <Route path="/order" element={<Order />} /> */}
       </Routes>
+       {token && <ChatWidget/>} 
     </BrowserRouter>
   );
 }

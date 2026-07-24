@@ -25,16 +25,12 @@ const messageSchema = new mongoose.Schema(
 
 const conversationSchema = new mongoose.Schema(
     {
-        sessionId: {
-            type: String,
-            required: true,
-            unique: true,
-            index: true,
-        },
+        
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            default: null,
+            required: true,
+            unique: true,
         },
         messages: {
             type: [messageSchema],
