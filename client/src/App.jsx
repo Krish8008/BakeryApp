@@ -17,6 +17,7 @@ import MyBookings from "./Pages/MyBookings";
 import AdminOrders from "./Pages/AdminOrders";
 import Profile from "./Pages/Profile";
 import ChatWidget from "./chatbot/components/ChatWidget";
+import AdminRoute from "./middlewares/AdminRoute";
 
 
 
@@ -35,10 +36,9 @@ const [user, setUser] = useState(
       <Navbar setToken={setToken} setUser={setUser}  />
 
       <Routes>
+
         <Route path="/" element={<Home />} />
-        <Route path="/add-cake" element={<AddCake />} />
         <Route path="/cake/:id" element={<ShowCake/> } />
-        <Route path="/cake/:id/edit" element={<EditCake />} />
         <Route path="/cake/:id/buy" element={<BuyCake />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
@@ -46,11 +46,32 @@ const [user, setUser] = useState(
         <Route path="/signup" element={<Signup/>} />
         <Route path="/login" element={<Login setToken={setToken} setUser={setUser}  />} />
         <Route path="/my-bookings" element={<MyBookings />} />
-        <Route path="/admin/orders" element={<AdminOrders />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="*" element={<PageNotFound/>} />
-        
-        
+
+        <Route 
+          path="/add-cake" 
+            element={
+              <AdminRoute>
+                <AddCake />
+              </AdminRoute>
+            } />
+
+        <Route 
+          path="/cake/:id/edit" 
+          element={
+            <AdminRoute>
+              <EditCake />  
+            </AdminRoute>
+          } />
+
+        <Route 
+          path="/admin/orders" 
+          element={
+            <AdminRoute>
+              <AdminOrders />
+            </AdminRoute>
+            } />
         
         {/*  
         <Route path="/custom-orders" element={<CustomOrders />} />

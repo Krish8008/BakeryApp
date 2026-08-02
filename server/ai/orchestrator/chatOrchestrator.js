@@ -17,13 +17,9 @@ async function chatOrchestrator(history) {
     let productContext = "";
 
     if (intent.useProducts) {
-
         const filters = await extractFilters(question);
-
         const products = await findProducts(filters);
-
         productContext = buildProductContext(products);
-
     }
 
 
@@ -31,23 +27,16 @@ async function chatOrchestrator(history) {
     let knowledgeContext = "";
 
     if (intent.useKnowledge) {
-
         knowledgeContext = await getContext(question);
-
     }
 
     
     // 4. Build Prompt
     const prompt = buildPrompt({
-
         history,
-
         productContext,
-
         knowledgeContext,
-
         question,
-
     });
 
     

@@ -8,7 +8,7 @@ function About() {
       <section className="bg-gradient-to-r from-pink-500 to-rose-500 text-white py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            About Cakes By Snehal
+            About Cakes By CakeCraft
           </h1>
 
           <p className="text-lg md:text-xl max-w-3xl mx-auto opacity-90">
@@ -154,12 +154,12 @@ function About() {
           </p>
 
           <a
-            href="https://www.instagram.com/cakes_by_snehal_/"
+            href="/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center bg-gradient-to-r from-pink-500 to-purple-500 text-white px-8 py-4 rounded-full font-semibold hover:scale-105 transition"
           >
-            📸 @cakes_by_snehal_
+            📸 @cakes_by_CakeCraft
           </a>
 
         </div>

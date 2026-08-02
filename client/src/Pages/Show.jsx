@@ -22,6 +22,13 @@ function ShowCake() {
   }, [id]);
 
   const handleDelete = async () => {
+    if(user.role !== "admin"){
+      return(
+        <>
+          <p>you are not authorize to delete</p>
+        </>
+      )
+    }
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this cake?"
     );

@@ -100,9 +100,11 @@ const fetchCake = async () => {
       }
     );
     console.log("Data", data);
+    console.log("Key:", import.meta.env.VITE_RAZORPAY_KEY_ID);
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      
 
       amount: data.order.amount,
 
