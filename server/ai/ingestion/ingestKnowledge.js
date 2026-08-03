@@ -1,4 +1,9 @@
-require("dotenv").config();
+const path = require("path");
+
+require("dotenv").config({
+    path: path.resolve(__dirname, "../../.env"),
+});
+
 const { randomUUID } = require("crypto");
 const { readKnowledgeFiles } = require("../knowledge/fileService");
 const { chunkText } = require("../chunking/chunkService");
@@ -6,6 +11,10 @@ const { embed } = require("../embeddings/embeddingService");
 const { createCollection, uploadPoints } = require("../vectorstore/qdrantService");
 
 async function ingestKnowledge() {
+
+    console.log("QDRANT_URL:", process.env.QDRANT_URL);
+console.log("QDRANT_API_KEY:", process.env.QDRANT_API_KEY);
+    
     try {
         console.log("📖 Reading knowledge files...");
         const files = readKnowledgeFiles();

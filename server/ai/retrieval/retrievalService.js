@@ -1,7 +1,14 @@
+const path = require("path");
+
+require("dotenv").config({
+    path: path.join(__dirname, "../../.env"),
+});
+
 const { embed } = require("../embeddings/embeddingService");
 const client = require("../vectorstore/qdrantClient");
 
 const COLLECTION_NAME = process.env.QDRANT_COLLECTION;
+console.log("collection anme - ", COLLECTION_NAME)
 
 async function searchKnowledge(query, limit = 5) {
 
