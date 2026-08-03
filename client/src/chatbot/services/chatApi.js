@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_URL } from "../../config/api";
 
 const API = axios.create({
-    baseURL: "https://bakeryapp-server.onrender.com/api",
+    baseURL: `${API_URL}/api`,
 });
 
 // Automatically attach JWT
@@ -24,7 +25,7 @@ export async function sendMessage(message) {
 }
 
 export async function fetchHistory() {
-    const response = await API.get("/chat/history");
 
+    const response = await API.get("/chat/history");
     return response.data.history;
 }

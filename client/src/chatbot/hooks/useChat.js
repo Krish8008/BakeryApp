@@ -4,8 +4,6 @@ import { sendMessage as sendMessageAPI, fetchHistory } from "../services/chatApi
 
 export function useChat(user) {
 
-    
-
     const [messages, setMessages] = useState([
         {
             role: "assistant",
@@ -13,10 +11,7 @@ export function useChat(user) {
                 "👋 Welcome to Sweet Bakery! How can I help you today?",
         },
     ]);
-
-
-
-
+    
 useEffect(() => {
 
     async function loadHistory() {

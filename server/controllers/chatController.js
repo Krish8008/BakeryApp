@@ -11,6 +11,7 @@ async function chat(req, res) {
 
         const { message } = req.body;
         const userId = req.user.id;
+        
 
         // Validate request
         if (!message) {
@@ -54,7 +55,6 @@ async function getHistoryy(req, res) {
 
     try {
         const userId = req.user.id;
-
         const history = await getHistory(userId);
 
         res.json({
