@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../config/api";
+import toast from "react-hot-toast";
 
 const MyBookings = () => {
 
@@ -47,7 +48,7 @@ const MyBookings = () => {
         }
       );
 
-      alert("Booking Cancelled");
+      toast.success("Booking Cancelled");
 
       fetchBookings();
 

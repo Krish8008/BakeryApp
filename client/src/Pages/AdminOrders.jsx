@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import axios from "axios";
 import { API_URL } from "../config/api";
 
@@ -27,7 +28,7 @@ const AdminOrders = () => {
       setOrders(res.data.bookings);
     } catch (error) {
       console.log(error);
-      alert(error.response?.data?.message || "Failed to fetch orders");
+      toast.error(error.response?.data?.message || "Failed to fetch orders");
     }
   };
 
@@ -47,12 +48,12 @@ const AdminOrders = () => {
         }
       );
 
-      alert("Order status updated successfully");
+      toast.success("Order status updated successfully");
 
       fetchOrders();
     } catch (error) {
       console.log(error);
-      alert(error.response?.data?.message || "Unable to update status");
+      toast.error(error.response?.data?.message || "Unable to update status");
     }
   };
 

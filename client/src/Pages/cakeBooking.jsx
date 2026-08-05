@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../config/api";
+import toast from "react-hot-toast";
 
 const BuyCake = () => {
 
@@ -48,26 +49,26 @@ const fetchCake = async () => {
   e.preventDefault();
 
   if(Number(formData.quantity) < 1){
-      alert("Quntity must be at least 1")
+      return toast.error("Quntity must be at least 1")
   }
 
   if (!formData.deliveryAddress.trim()) {
-    return alert("Delivery address is required");
+    return toast.error("Delivery address is required");
   }
 
   // Phone
   if (!formData.phone.trim()) {
-    return alert("Phone number is required");
+    return toast.error("Phone number is required");
   }
 
   // Phone validation
   if (!/^[6-9]\d{9}$/.test(formData.phone)) {
-    return alert("Enter a valid 10-digit phone number");
+    return toast.error("Enter a valid 10-digit phone number");
   }
 
   // Delivery Date
   if (!formData.deliveryDate) {
-    return alert("Please select delivery date");
+    return toast.error("Please select delivery date");
   }
 
   const selectedDate = new Date(formData.deliveryDate);
@@ -76,7 +77,7 @@ const fetchCake = async () => {
   today.setHours(0, 0, 0, 0);
 
   if (selectedDate < today) {
-    return alert("Delivery date cannot be in the past");
+    return toast.error("Delivery date cannot be in the past");
   }
 
 
@@ -141,13 +142,13 @@ handler: async function (response) {
       }
     );
 
-    alert(verify.data.message);
+    toast.success(verify.data.message);
 
     navigate("/my-bookings");
 
   } catch (error) {
     console.log(error);
-    alert(error.response?.data?.message || "Verification Failed");
+    toast.error(error.response?.data?.message || "Verification Failed");
   }
 },
 
@@ -174,7 +175,7 @@ handler: async function (response) {
 
   } catch (error) {
     console.log(error);
-    alert("Payment Failed");
+    toast.error("Payment Failed");
   }
 };
 

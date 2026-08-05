@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_URL } from "../config/api";
+import toast from "react-hot-toast";
 
 function EditCake() {
   const { id } = useParams();
@@ -52,7 +53,7 @@ function EditCake() {
     const files = Array.from(e.target.files);
 
     if (files.length > 5) {
-      alert("Maximum 5 images allowed");
+      toast.error("Maximum 5 images allowed");
       return;
     }
 
@@ -94,14 +95,14 @@ function EditCake() {
       const data = await response.json();
 
       if (data.success) {
-        alert("Cake Updated Successfully!");
+        toast.success("Cake Updated Successfully!");
         navigate(`/cake/${id}`);
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.log(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }

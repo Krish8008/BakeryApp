@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import { API_URL } from "../config/api";
 
 function Login({setToken, setUser}) {
@@ -49,7 +50,7 @@ function Login({setToken, setUser}) {
           JSON.stringify(data.user)
         );
 
-      alert("Login Successful");
+      toast.success("Login Successful 🎉");
 
 
       // Redirect to the page the user originally wanted
@@ -59,11 +60,11 @@ function Login({setToken, setUser}) {
         replace: true,
       });
     } else {
-        alert(data.message);
+        toast.error(data.message);
 }
     } catch (error) {
       console.log(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }

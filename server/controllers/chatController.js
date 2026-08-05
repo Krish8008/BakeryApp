@@ -11,7 +11,6 @@ async function chat(req, res) {
 
         const { message } = req.body;
         const userId = req.user.id;
-        
 
         // Validate request
         if (!message) {

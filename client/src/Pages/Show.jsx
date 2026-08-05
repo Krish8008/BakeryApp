@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { API_URL } from "../config/api";
+import toast from "react-hot-toast";
 
 function ShowCake() {
   const navigate = useNavigate();
@@ -49,20 +50,20 @@ function ShowCake() {
       const data = await response.json();
 
       if (data.success) {
-        alert("Cake deleted successfully!");
+        toast.success("Cake deleted successfully!");
         navigate("/cakes");
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.log(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
 const handleBuy = () => {
   if (!token) {
-    alert("Please login first.");
+    toast.error("Please login first.");
 
     navigate("/login", {
       state: {

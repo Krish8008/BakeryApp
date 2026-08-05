@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 import Navbar from "./Pages/Navbar";
 import Home from "./Pages/Home";
@@ -18,6 +19,7 @@ import AdminOrders from "./Pages/AdminOrders";
 import Profile from "./Pages/Profile";
 import ChatWidget from "./chatbot/components/ChatWidget";
 import AdminRoute from "./middlewares/AdminRoute";
+import Practice from "./practice";
 
 
 
@@ -35,6 +37,11 @@ const [user, setUser] = useState(
     <BrowserRouter>
       <Navbar setToken={setToken} setUser={setUser}  />
 
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
+
       <Routes>
 
         <Route path="/" element={<Home />} />
@@ -48,6 +55,7 @@ const [user, setUser] = useState(
         <Route path="/my-bookings" element={<MyBookings />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="*" element={<PageNotFound/>} />
+        <Route path="/practice" element={<Practice/>}  />
 
         <Route 
           path="/add-cake" 

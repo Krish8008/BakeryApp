@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link, Navigate } from "react-router-dom";
 import { API_URL } from "../config/api";
 
@@ -78,7 +79,7 @@ if (user?.role !== "admin") {
     const files = Array.from(e.target.files);
 
     if (files.length > 5) {
-      alert("Maximum 5 images allowed");
+      toast.error("Maximum 5 images allowed");
       return;
     }
 
@@ -92,7 +93,7 @@ if (user?.role !== "admin") {
     e.preventDefault();
 
     if (cake.images.length === 0) {
-      return alert("Please select at least one image");
+      return toast.error("Please select at least one image");
     }
 
     try {
@@ -126,7 +127,7 @@ if (user?.role !== "admin") {
       console.log("data", data);
 
       if (response.ok) {
-        alert("Cake Added Successfully!");
+        toast.success("Cake Added Successfully!");
 
         setCake({
           name: "",
@@ -141,11 +142,11 @@ if (user?.role !== "admin") {
 
         document.getElementById("cakeImages").value = "";
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }

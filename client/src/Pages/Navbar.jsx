@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, Cake, UserCircle  } from "lucide-react";
+import toast from "react-hot-toast";
 
 
 
@@ -20,7 +21,7 @@ const Navbar = ({ setToken, setUser }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
-    alert("logout successful...!");
+    toast.success("Logout Successful");
     navigate("/login");
   };
 

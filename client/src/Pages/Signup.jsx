@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { API_URL } from "../config/api";
+import toast from "react-hot-toast";
 
 function Signup() {
   const navigate = useNavigate();
@@ -46,14 +47,14 @@ function Signup() {
           JSON.stringify(data.user)
         );
 
-        alert("Signup Successful");
+        toast.success("Signup Successful");
         navigate("/");
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.log(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }

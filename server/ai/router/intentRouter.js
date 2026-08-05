@@ -6,7 +6,6 @@ async function detectIntent(question) {
     const response = await groq.chat.completions.create({
 
         model: "llama-3.3-70b-versatile",
-
         temperature: 0,
 
         response_format: {
