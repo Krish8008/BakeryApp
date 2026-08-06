@@ -55,7 +55,7 @@ const [user, setUser] = useState(
         <Route path="/my-bookings" element={<MyBookings />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="*" element={<PageNotFound/>} />
-        <Route path="/practice" element={<Practice/>}  />
+        
 
         <Route 
           path="/add-cake" 

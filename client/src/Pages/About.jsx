@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function About() {
   return (
@@ -37,7 +38,7 @@ function About() {
 
             <p className="text-gray-600 text-lg leading-relaxed mb-4">
               Welcome to <span className="font-semibold text-pink-600">
-                Cakes By Snehal
+                Cakes By CakeCraft
               </span>,
               where every cake is crafted with passion and attention to detail.
               We specialize in creating beautiful and delicious cakes for
@@ -155,8 +156,6 @@ function About() {
 
           <a
             href="/"
-            target="_blank"
-            rel="noopener noreferrer"
             className="inline-flex items-center bg-gradient-to-r from-pink-500 to-purple-500 text-white px-8 py-4 rounded-full font-semibold hover:scale-105 transition"
           >
             📸 @cakes_by_CakeCraft
@@ -177,9 +176,11 @@ function About() {
             Let us make your special moments sweeter with a custom-made cake.
           </p>
 
+         <Link to="/cakes">
           <button className="bg-white text-pink-600 px-8 py-4 rounded-full font-bold hover:bg-pink-100 transition">
             Order Now
           </button>
+        </Link>
 
         </div>
       </section>
