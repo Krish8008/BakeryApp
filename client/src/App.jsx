@@ -19,7 +19,6 @@ import AdminOrders from "./Pages/AdminOrders";
 import Profile from "./Pages/Profile";
 import ChatWidget from "./chatbot/components/ChatWidget";
 import AdminRoute from "./middlewares/AdminRoute";
-import Practice from "./practice";
 
 
 
