@@ -13,15 +13,19 @@ async function chatOrchestrator(history) {
     // 1. Detect Intent
     const intent = await detectIntent(question);
 
+    console.log("intent - ", intent);
+
+
     // 2. Retrieve Product Context
     let productContext = "";
 
     if (intent.useProducts) {
         const filters = await extractFilters(question);
         const products = await findProducts(filters);
-        productContext = buildProductContext(products);
+        productContext = await buildProductContext(products);
     }
 
+        console.log("product context - ", productContext);
 
     // 3. Retrieve Knowledge Context
     let knowledgeContext = "";
@@ -30,14 +34,18 @@ async function chatOrchestrator(history) {
         knowledgeContext = await getContext(question);
     }
 
+    console.log("knowledge context - ", knowledgeContext);
+
     
     // 4. Build Prompt
-    const prompt = buildPrompt({
+    const prompt = await buildPrompt({
         history,
         productContext,
         knowledgeContext,
         question,
     });
+
+    console.log("prompt", prompt);
 
     
     // 5. Generate AI Response

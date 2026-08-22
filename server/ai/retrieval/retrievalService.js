@@ -8,11 +8,13 @@ const { embed } = require("../embeddings/embeddingService");
 const client = require("../vectorstore/qdrantClient");
 
 const COLLECTION_NAME = process.env.QDRANT_COLLECTION;
-console.log("collection anme - ", COLLECTION_NAME)
+//console.log("collection anme - ", COLLECTION_NAME)
 
 async function searchKnowledge(query, limit = 5) {
 
     const vector = await embed(query);
+
+    console.log("question query", vector);
 
     const response = await client.search(COLLECTION_NAME, {
         vector,

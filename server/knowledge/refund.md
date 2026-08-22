@@ -1,7 +1,17 @@
 # Refund Policy
 
-Refunds are available only if the order has not entered preparation.
+Eligible refunds are processed to the original payment method.
 
-Customized cakes cannot be refunded after preparation starts.
+Refund Time
 
-Approved refunds are processed within 5-7 business days.
+UPI
+
+2–5 Business Days
+
+Cards
+
+5–7 Business Days
+
+Customized cakes are non-refundable after preparation begins.
+
+Delivery charges are non-refundable once delivery has started.

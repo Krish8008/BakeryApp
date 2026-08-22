@@ -1,15 +1,29 @@
 # Delivery Policy
 
-Same-day delivery is available for orders placed before 2:00 PM.
-
-Delivery Areas
-
-Within 15 km.
+Delivery is available only within 15 km.
 
 Delivery Charges
 
-0-5 km → ₹50
+0-5 km
 
-5-15 km → ₹100
+₹50
 
-Orders above ₹1000 receive free delivery.
+5-15 km
+
+₹100
+
+Above ₹1000
+
+Free Delivery
+
+Customers outside the delivery area cannot place online orders.
+
+Same-day delivery is available only if:
+
+• Order placed before 2:00 PM
+
+• Cake is available
+
+Otherwise:
+
+Next available delivery slot should be suggested.
