@@ -113,10 +113,15 @@ if (user?.role !== "admin") {
         formData.append("images", image);
       });
 
+      console.log("formsata : ",formData);
+
       const response = await fetch(
         `${API_URL}/api/cakes`,
         {
           method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           body: formData,
         }
       );

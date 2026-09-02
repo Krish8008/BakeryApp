@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, Cake, UserCircle  } from "lucide-react";
+import { Menu, X, Cake, UserCircle, ShoppingCart } from "lucide-react";
 import toast from "react-hot-toast";
-
+import { useCart } from "../CartContext";
 
 
 const Navbar = ({ setToken, setUser }) => {
@@ -15,8 +15,9 @@ const Navbar = ({ setToken, setUser }) => {
   const user = JSON.parse(
     localStorage.getItem("user") || "null"
   );
-  
 
+  const { count } = useCart();
+  
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -89,6 +90,15 @@ const Navbar = ({ setToken, setUser }) => {
               className="text-gray-700 hover:text-pink-600 font-medium"
             >
               Contact
+            </Link>
+
+            <Link to="/cart" className="relative">
+              <ShoppingCart />
+              {count > 0 && (
+                <span className="absolute -top-2 -right-3 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                  {count}
+                </span>
+              )}
             </Link>
 
             {token ? (

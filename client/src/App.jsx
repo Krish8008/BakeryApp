@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Navbar from "./Pages/Navbar";
 import Home from "./Pages/Home";
 import AddCake from "./Pages/AddCake";
-import ShowCake from "./Pages/Show";
+import ShowCake from "./Pages/ShowNew";
 import EditCake from "./Pages/EditCake";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
@@ -20,7 +20,8 @@ import Profile from "./Pages/Profile";
 import ChatWidget from "./chatbot/components/ChatWidget";
 import AdminRoute from "./middlewares/AdminRoute";
 
-
+import { CartProvider } from "./CartContext";
+import CartPage from "./Pages/Cart";
 
 function App() {
 
@@ -33,59 +34,62 @@ const [user, setUser] = useState(
 );
 
   return (
-    <BrowserRouter>
-      <Navbar setToken={setToken} setUser={setUser}  />
+    <CartProvider>
+      <BrowserRouter>
+        <Navbar setToken={setToken} setUser={setUser}  />
 
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-      />
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+        />
 
-      <Routes>
+        <Routes>
 
-        <Route path="/" element={<Home />} />
-        <Route path="/cake/:id" element={<ShowCake/> } />
-        <Route path="/cake/:id/buy" element={<BuyCake />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/cakes" element={<Cakes />} />
-        <Route path="/signup" element={<Signup/>} />
-        <Route path="/login" element={<Login setToken={setToken} setUser={setUser}  />} />
-        <Route path="/my-bookings" element={<MyBookings />} />
-        <Route path="/profile" element={<Profile/>} />
-        <Route path="*" element={<PageNotFound/>} />
-        
+          <Route path="/" element={<Home />} />
+          <Route path="/cake/:id" element={<ShowCake/> } />
+          <Route path="/cake/:id/buy" element={<BuyCake />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/cakes" element={<Cakes />} />
+          <Route path="/signup" element={<Signup/>} />
+          <Route path="/login" element={<Login setToken={setToken} setUser={setUser}  />} />
+          <Route path="/my-bookings" element={<MyBookings />} />
+          <Route path="/profile" element={<Profile/>} />
+          <Route path="/cart" element={<CartPage/>} />
+          <Route path="*" element={<PageNotFound/>} />
+          
 
-        <Route 
-          path="/add-cake" 
+          <Route 
+            path="/add-cake" 
+              element={
+                <AdminRoute>
+                  <AddCake />
+                </AdminRoute>
+              } />
+
+          <Route 
+            path="/cake/:id/edit" 
             element={
               <AdminRoute>
-                <AddCake />
+                <EditCake />  
               </AdminRoute>
             } />
 
-        <Route 
-          path="/cake/:id/edit" 
-          element={
-            <AdminRoute>
-              <EditCake />  
-            </AdminRoute>
-          } />
-
-        <Route 
-          path="/admin/orders" 
-          element={
-            <AdminRoute>
-              <AdminOrders />
-            </AdminRoute>
-            } />
-        
-        {/*  
-        <Route path="/custom-orders" element={<CustomOrders />} />
-        <Route path="/order" element={<Order />} /> */}
-      </Routes>
-       {token && <ChatWidget user={user}/>} 
-    </BrowserRouter>
+          <Route 
+            path="/admin/orders" 
+            element={
+              <AdminRoute>
+                <AdminOrders />
+              </AdminRoute>
+              } />
+          
+          {/*  
+          <Route path="/custom-orders" element={<CustomOrders />} />
+          <Route path="/order" element={<Order />} /> */}
+        </Routes>
+         {token && <ChatWidget user={user}/>} 
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 

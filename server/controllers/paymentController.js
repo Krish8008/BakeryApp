@@ -9,6 +9,15 @@ module.exports.createOrder = async (req, res) => {
   try {
     const { amount } = req.body;
 
+    // Ensure Razorpay is configured
+    if (!razorpay) {
+      return res.status(500).json({
+        success: false,
+        message:
+          "Razorpay is not configured on the server. Please set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in environment variables.",
+      });
+    }
+
     const options = {
       amount: amount * 100,
       currency: "INR",
@@ -50,6 +59,15 @@ module.exports.verifyPayment = async (req, res) => {
       deliveryDate,
 
     } = req.body;
+
+    // Ensure Razorpay secret is configured for signature verification
+    if (!process.env.RAZORPAY_KEY_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message:
+          "Razorpay secret is not configured on the server. Please set RAZORPAY_KEY_SECRET in environment variables.",
+      });
+    }
 
     // Verify Signature
     const generatedSignature = crypto

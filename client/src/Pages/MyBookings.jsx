@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../config/api";
 import toast from "react-hot-toast";
+import ReviewCard from "./Components/ReviewCard";
+import ReviewForm from "./Components/ReviewFrom";
 
 const MyBookings = () => {
 
   const [bookings, setBookings] = useState([]);
+  const storedUser = localStorage.getItem("user");
+  const currentUser = storedUser ? JSON.parse(storedUser) : null;
 
   useEffect(() => {
     fetchBookings();
@@ -20,12 +24,13 @@ const MyBookings = () => {
         `${API_URL}/api/bookings/my`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       setBookings(res.data.bookings);
+      console.log(res.data.bookings);
 
     } catch (error) {
       console.log(error);
@@ -128,6 +133,13 @@ const MyBookings = () => {
                 Cancel Booking
               </button>
 
+            )}
+
+            {booking.orderStatus === "Delivered" && (
+              <ReviewForm
+                productId={booking.cake?._id}
+                currentUser={currentUser}
+              />
             )}
 
           </div>

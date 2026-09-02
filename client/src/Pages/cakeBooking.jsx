@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../config/api";
@@ -24,13 +24,9 @@ const BuyCake = () => {
 
 const fetchCake = async () => {
   try {
-    //console.log("Cake ID:", id);
-
     const res = await axios.get(
       `${API_URL}/api/cakes/${id}`
     );
-
-    //console.log("Response:", res.data);
 
     setCake(res.data.cake);
 
@@ -83,7 +79,12 @@ const fetchCake = async () => {
 
   try {
     const token = localStorage.getItem("token");
-    console.log("token", token);
+
+    if (!token) {
+      toast.error("Please login to proceed with booking");
+      navigate("/login", { state: { from: `/cake/${id}/buy` } });
+      return;
+    }
 
     const totalAmount =
       cake.price * Number(formData.quantity);
@@ -100,61 +101,51 @@ const fetchCake = async () => {
         },
       }
     );
-    console.log("Data", data);
-    console.log("Key:", import.meta.env.VITE_RAZORPAY_KEY_ID);
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-      
-
       amount: data.order.amount,
-
       currency: data.order.currency,
-
       name: "Sweet Cakes",
-
       description: cake.name,
-
       order_id: data.order.id,
 
-handler: async function (response) {
-  try {
-    const token = localStorage.getItem("token");
+  handler: async function (response) {
+    try {
+      const token = localStorage.getItem("token");
 
-    const verify = await axios.post(
-      `${API_URL}/api/payment/verify`,
-      
-      {
-        razorpay_order_id: response.razorpay_order_id,
-        razorpay_payment_id: response.razorpay_payment_id,
-        razorpay_signature: response.razorpay_signature,
+      const verify = await axios.post(
+        `${API_URL}/api/payment/verify`,
+        {
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
 
-        cakeId: id,
-        quantity: Number(formData.quantity),
-        deliveryAddress: formData.deliveryAddress,
-        phone: formData.phone,
-        deliveryDate: formData.deliveryDate,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+          cakeId: id,
+          quantity: Number(formData.quantity),
+          deliveryAddress: formData.deliveryAddress,
+          phone: formData.phone,
+          deliveryDate: formData.deliveryDate,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    toast.success(verify.data.message);
+      toast.success(verify.data.message);
 
-    navigate("/my-bookings");
+      navigate("/my-bookings");
 
-  } catch (error) {
-    console.log(error);
-    toast.error(error.response?.data?.message || "Verification Failed");
-  }
-},
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Verification Failed");
+    }
+  },
 
       prefill: {
         name: JSON.parse(localStorage.getItem("user"))?.name,
-
         email: JSON.parse(localStorage.getItem("user"))?.email,
 
         contact: formData.phone,

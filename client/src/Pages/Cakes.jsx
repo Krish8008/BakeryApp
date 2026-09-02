@@ -16,6 +16,7 @@ function Cakes() {
       const response = await fetch(
         `${API_URL}/api/cakes`
       );
+      
 
       const data = await response.json();
 

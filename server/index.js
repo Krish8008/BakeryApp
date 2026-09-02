@@ -17,10 +17,14 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://bakeryapp-client.onrender.com",
+      "https://localhost",
+      "http://localhost",
+      "capacitor://localhost",
     ],
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

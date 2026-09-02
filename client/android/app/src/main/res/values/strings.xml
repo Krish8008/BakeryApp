@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Cakes by Snehal</string>
+    <string name="title_activity_main">Cakes by Snehal</string>
+    <string name="package_name">com.cakesbysnehal.app</string>
+    <string name="custom_url_scheme">com.cakesbysnehal.app</string>
+</resources>

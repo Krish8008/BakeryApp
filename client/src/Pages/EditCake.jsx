@@ -88,6 +88,9 @@ function EditCake() {
         `${API_URL}/api/cakes/${id}`,
         {
           method: "PUT",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
           body: formData,
         }
       );
