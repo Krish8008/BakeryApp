@@ -180,7 +180,10 @@ const Navbar = ({ setToken, setUser }) => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden"
+            type="button"
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+            className="md:hidden rounded-lg p-2 transition-colors hover:bg-pink-100 focus:outline-none focus:ring-2 focus:ring-pink-500"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
@@ -193,20 +196,108 @@ const Navbar = ({ setToken, setUser }) => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t">
-            <div className="flex flex-col gap-4">
-              <Link to="/">Home</Link>
-              <Link to="/cakes">Cakes</Link>
-              <Link to="/add-cake">Add Cake</Link>
-              <Link to="/about">About</Link>
-              <Link to="/contact">Contact</Link>
-
+          <div className="md:hidden border-t border-pink-100 py-3">
+            <div className="flex flex-col gap-1">
               <Link
-                to="/order"
-                className="bg-pink-600 text-white py-2 rounded-full text-center"
+                to="/"
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
               >
-                Order Now
+                Home
               </Link>
+              <Link
+                to="/cakes"
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+              >
+                Cakes
+              </Link>
+              {user?.role === "admin" && (
+                <Link
+                  to="/add-cake"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+                >
+                  Add Cake
+                </Link>
+              )}
+              {token && (
+                <Link
+                  to="/my-bookings"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+                >
+                  My Orders
+                </Link>
+              )}
+              {user?.role === "admin" && (
+                <Link
+                  to="/admin/orders"
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+                >
+                  Admin Orders
+                </Link>
+              )}
+              <Link
+                to="/about"
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+              >
+                About
+              </Link>
+              <Link
+                to="/contact"
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+              >
+                Contact
+              </Link>
+              <Link
+                to="/cart"
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+              >
+                Cart{count > 0 ? ` (${count})` : ""}
+              </Link>
+              {token ? (
+                <>
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+                  >
+                    My Profile
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsOpen(false);
+                      logout();
+                    }}
+                    className="rounded-lg px-3 py-2.5 text-left font-medium text-red-500 transition-colors hover:bg-red-50"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-lg bg-pink-600 px-3 py-2.5 text-center font-medium text-white transition-colors hover:bg-pink-700"
+                  >
+                    Signup
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}

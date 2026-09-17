@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { App as CapacitorApp } from "@capacitor/app";
+import { Capacitor } from "@capacitor/core";
 import { Toaster } from "react-hot-toast";
 
 import Navbar from "./Pages/Navbar";
@@ -32,6 +34,41 @@ function App() {
 const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user"))
 );
+
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) {
+      return undefined;
+    }
+
+    let isDisposed = false;
+    let backButtonListener;
+
+    const registerBackButtonListener = async () => {
+      const listener = await CapacitorApp.addListener("backButton", ({ canGoBack }) => {
+        if (canGoBack) {
+          window.history.back();
+        } else {
+          CapacitorApp.exitApp();
+        }
+      });
+
+      if (isDisposed) {
+        await listener.remove();
+        return;
+      }
+
+      backButtonListener = listener;
+    };
+
+    registerBackButtonListener();
+
+    return () => {
+      isDisposed = true;
+      if (backButtonListener) {
+        backButtonListener.remove();
+      }
+    };
+  }, []);
 
   return (
     <CartProvider>

@@ -20,6 +20,10 @@ app.use(
       "https://localhost",
       "http://localhost",
       "capacitor://localhost",
+      "http://localhost:5173",
+      "http://localhost:8081",
+      "http://10.0.2.2:8081",
+      "http://localhost:3000",
     ],
     credentials: true,
   })

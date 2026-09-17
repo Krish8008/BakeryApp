@@ -23,7 +23,7 @@ function ChatInput({
 
     return (
 
-        <div className="border-t p-3 flex gap-2">
+        <div className="border-t border-pink-100 bg-white p-3 flex gap-2">
             <input
                 type="text"
                 value={text}
@@ -33,13 +33,16 @@ function ChatInput({
                 onKeyDown={handleKeyDown}
                 placeholder="Type your message..."
                 disabled={loading}
-                className="flex-1 border rounded-full px-4 py-2 outline-none"
+                aria-label="Chat message"
+                className="min-w-0 flex-1 border border-gray-200 rounded-full px-4 py-2.5 text-sm outline-none transition focus:border-pink-400 focus:ring-2 focus:ring-pink-100 disabled:bg-gray-50"
             />
 
             <button
+                type="button"
+                aria-label="Send message"
                 onClick={handleSend}
                 disabled={loading}
-                className="w-11 h-11 rounded-full bg-pink-600 text-white flex items-center justify-center"
+                className="w-11 h-11 shrink-0 rounded-full bg-pink-600 text-white flex items-center justify-center transition hover:bg-pink-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-pink-300"
             >
 
                 <FaPaperPlane />

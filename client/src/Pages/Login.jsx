@@ -27,20 +27,17 @@ function Login({setToken, setUser}) {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        `${API_URL}/api/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
-      if (data.success) {
+      if (response.ok && data.success) {
         localStorage.setItem("token", data.token);
         setToken(data.token);
         setUser(data.user);
@@ -60,18 +57,20 @@ function Login({setToken, setUser}) {
         replace: true,
       });
     } else {
-        toast.error(data.message);
+          toast.error(data.message || "Invalid credentials");
 }
     } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong");
+      console.error("Login request failed", error);
+      toast.error(
+        "Unable to connect to the server. Check your internet connection and try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-pink-50 flex justify-center items-center px-4">
+    <div className="min-h-[100dvh] bg-pink-50 flex justify-center items-start sm:items-center px-4 py-8">
       <div className="bg-white w-full max-w-md p-8 rounded-3xl shadow-xl">
 
         <h1 className="text-4xl font-bold text-center text-pink-600 mb-2">
@@ -88,6 +87,8 @@ function Login({setToken, setUser}) {
             type="email"
             name="email"
             placeholder="Email Address"
+            autoComplete="email"
+            inputMode="email"
             value={user.email}
             onChange={handleChange}
             className="w-full border p-4 rounded-xl focus:outline-pink-500"
@@ -98,6 +99,7 @@ function Login({setToken, setUser}) {
             type="password"
             name="password"
             placeholder="Password"
+            autoComplete="current-password"
             value={user.password}
             onChange={handleChange}
             className="w-full border p-4 rounded-xl focus:outline-pink-500"

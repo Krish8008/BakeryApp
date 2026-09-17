@@ -19,21 +19,17 @@ const BuyCake = () => {
     });
 
     useEffect(() => {
-        fetchCake();
-    }, []);
+        const loadCake = async () => {
+            try {
+                const res = await axios.get(`${API_URL}/api/cakes/${id}`);
+                setCake(res.data.cake);
+            } catch (error) {
+                console.log(error);
+            }
+        };
 
-const fetchCake = async () => {
-  try {
-    const res = await axios.get(
-      `${API_URL}/api/cakes/${id}`
-    );
-
-    setCake(res.data.cake);
-
-  } catch (error) {
-    console.log(error);
-  }
-};
+        loadCake();
+    }, [id]);
     const handleChange = (e) => {
         setFormData({
             ...formData,

@@ -1,11 +1,31 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { API_URL } from "../config/api";
 
 const AddCake = () => {
-  
   const [loading, setLoading] = useState(false);
+  const [cake, setCake] = useState({
+    name: "",
+    description: "",
+    price: "",
+    category: "",
+    images: [],
+    weight: "",
+    flavor: "",
+    eggless: false,
+  });
+  const imagePreviews = useMemo(
+    () => cake.images.map((image) => URL.createObjectURL(image)),
+    [cake.images]
+  );
+
+  useEffect(() => {
+    return () => {
+      imagePreviews.forEach((previewUrl) => URL.revokeObjectURL(previewUrl));
+    };
+  }, [imagePreviews]);
+
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
@@ -54,17 +74,6 @@ if (user?.role !== "admin") {
     </div>
   );
 }
-
-  const [cake, setCake] = useState({
-    name: "",
-    description: "",
-    price: "",
-    category: "",
-    images: [],
-    weight: "",
-    flavor: "",
-    eggless: false,
-  });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -236,10 +245,10 @@ if (user?.role !== "admin") {
 
           {cake.images.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {cake.images.map((image, index) => (
+              {imagePreviews.map((previewUrl, index) => (
                 <img
                   key={index}
-                  src={URL.createObjectURL(image)}
+                  src={previewUrl}
                   alt={`preview-${index}`}
                   className="h-32 w-full object-cover rounded-lg border"
                 />
@@ -301,7 +310,4 @@ if (user?.role !== "admin") {
 };
 
 export default AddCake;
-
-
-
 
