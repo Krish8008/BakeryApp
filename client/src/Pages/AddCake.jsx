@@ -105,6 +105,13 @@ if (user?.role !== "admin") {
       return toast.error("Please select at least one image");
     }
 
+    const storedToken = localStorage.getItem("token")?.trim();
+
+    if (!storedToken) {
+      toast.error("Your session has expired. Please login again.");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -129,7 +136,9 @@ if (user?.role !== "admin") {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: storedToken.startsWith("Bearer ")
+              ? storedToken
+              : `Bearer ${storedToken}`,
           },
           body: formData,
         }
@@ -310,4 +319,3 @@ if (user?.role !== "admin") {
 };
 
 export default AddCake;
-
