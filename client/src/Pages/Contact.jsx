@@ -1,146 +1,235 @@
-import React from "react";
+import {
+  ArrowRight,
+  Clock3,
+  Mail,
+  MapPin,
+  Phone,
+  Send,
+} from "lucide-react";
 
 function Contact() {
   return (
-    <div className="bg-pink-50 min-h-screen">
+    <main className="min-h-screen overflow-hidden bg-[#fffaf7] text-[#38231f]">
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-pink-500 to-rose-500 text-white py-20">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
-            Contact Us
+      {/* HERO */}
+      <section className="relative overflow-hidden bg-[#4c2626] px-5 py-16 text-[#fffaf7] md:py-20">
+
+        <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#db8b64]/20 blur-3xl" />
+        <div className="absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-[#f5c997]/15 blur-3xl" />
+
+        <div className="relative mx-auto max-w-3xl text-center">
+
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#f8d6af]/30 bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[.16em] text-[#f8d6af]">
+            <Mail size={13} />
+            Get In Touch
+          </span>
+
+          <h1 className="font-serif text-4xl font-semibold leading-tight md:text-5xl">
+            Let's make your
+            <br />
+            celebration sweeter.
           </h1>
 
-          <p className="text-lg md:text-xl opacity-90">
-            We'd love to hear from you. Let's make your celebrations sweeter!
+          <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-[#f9e8d9]/80 md:text-lg">
+            Have a question, custom cake idea, or special request?
+            We'd love to hear from you.
           </p>
+
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid lg:grid-cols-2 gap-10">
+      {/* CONTACT CONTENT */}
+      <section className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-18">
 
-          {/* Contact Information */}
-          <div className="bg-white p-8 rounded-3xl shadow-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8">
-              Get In Touch
-            </h2>
+        <div className="grid gap-6 lg:grid-cols-[.85fr_1.15fr]">
 
-            <div className="space-y-6">
+          {/* CONTACT INFORMATION */}
+          <div className="rounded-3xl border border-[#eadbd1] bg-white p-6 shadow-sm md:p-7">
 
-              <div className="flex items-center gap-4">
-                <div className="bg-pink-100 p-4 rounded-full">
-                  📞
+            <div className="mb-7">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[.18em] text-[#b45d45]">
+                Contact Details
+              </p>
+
+              <h2 className="font-serif text-3xl font-semibold">
+                Get in touch
+              </h2>
+
+              <p className="mt-2 text-sm leading-6 text-[#7d6259]">
+                We're happy to help with orders, custom cakes, and any
+                questions you may have.
+              </p>
+            </div>
+
+            {/* Details */}
+            <div className="space-y-4">
+
+              {/* Phone */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff1e5] text-[#9b4d39]">
+                  <Phone size={18} />
                 </div>
+
                 <div>
-                  <h3 className="font-semibold text-gray-800">
+                  <p className="text-xs font-semibold text-[#8a7168]">
                     Phone
-                  </h3>
-                  <p className="text-gray-600">
+                  </p>
+
+                  <p className="mt-0.5 text-sm font-medium text-[#38231f]">
                     +91 2X2X2X2X2
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="bg-pink-100 p-4 rounded-full">
-                  📧
+              {/* Email */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff1e5] text-[#9b4d39]">
+                  <Mail size={18} />
                 </div>
+
                 <div>
-                  <h3 className="font-semibold text-gray-800">
+                  <p className="text-xs font-semibold text-[#8a7168]">
                     Email
-                  </h3>
-                  <p className="text-gray-600">
+                  </p>
+
+                  <p className="mt-0.5 break-all text-sm font-medium text-[#38231f]">
                     cakesbysnehal@gmail.com
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="bg-pink-100 p-4 rounded-full">
-                  📍
+              {/* Location */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff1e5] text-[#9b4d39]">
+                  <MapPin size={18} />
                 </div>
+
                 <div>
-                  <h3 className="font-semibold text-gray-800">
+                  <p className="text-xs font-semibold text-[#8a7168]">
                     Location
-                  </h3>
-                  <p className="text-gray-600">
+                  </p>
+
+                  <p className="mt-0.5 text-sm font-medium text-[#38231f]">
                     Nagpur, Maharashtra, India
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="bg-pink-100 p-4 rounded-full">
-                  ⏰
+              {/* Hours */}
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff1e5] text-[#9b4d39]">
+                  <Clock3 size={18} />
                 </div>
+
                 <div>
-                  <h3 className="font-semibold text-gray-800">
+                  <p className="text-xs font-semibold text-[#8a7168]">
                     Working Hours
-                  </h3>
-                  <p className="text-gray-600">
-                    Mon - Sun : 9:00 AM - 9:00 PM
+                  </p>
+
+                  <p className="mt-0.5 text-sm font-medium text-[#38231f]">
+                    Mon - Sun · 9:00 AM - 9:00 PM
                   </p>
                 </div>
               </div>
 
             </div>
 
-            {/* Social Links */}
-            <div className="mt-10">
-              <h3 className="font-semibold text-gray-800 mb-4">
-                Follow Us
-              </h3>
+            
 
-              <a
-                href="https://www.instagram.com/cakes_by_snehal_/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-full hover:scale-105 transition"
-              >
-                📸 Instagram
-              </a>
-            </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="bg-white p-8 rounded-3xl shadow-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-8">
-              Send a Message
-            </h2>
+          {/* CONTACT FORM */}
+          <div className="rounded-3xl border border-[#eadbd1] bg-white p-6 shadow-sm md:p-7">
 
-            <form className="space-y-5">
+            <div className="mb-6">
+              <p className="mb-2 text-[11px] font-bold uppercase tracking-[.18em] text-[#b45d45]">
+                Send a Message
+              </p>
 
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="w-full border border-gray-300 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-              />
+              <h2 className="font-serif text-3xl font-semibold">
+                Tell us what you need
+              </h2>
 
-              <input
-                type="email"
-                placeholder="Your Email"
-                className="w-full border border-gray-300 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-              />
+              <p className="mt-2 text-sm leading-6 text-[#7d6259]">
+                Share your requirements and we'll help you plan the perfect
+                cake.
+              </p>
+            </div>
 
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                className="w-full border border-gray-300 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-              />
+            <form
+              action="mailto:cakesbysnehal@gmail.com"
+              method="post"
+              encType="text/plain"
+              className="space-y-4"
+            >
 
-              <textarea
-                rows="6"
-                placeholder="Tell us about your cake requirement..."
-                className="w-full border border-gray-300 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
-              ></textarea>
+              {/* Name */}
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-[#765f58]">
+                  Your Name
+                </label>
 
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter your name"
+                  required
+                  className="w-full rounded-xl border border-[#eadbd1] bg-[#fffaf7] px-4 py-3 text-sm text-[#38231f] outline-none transition placeholder:text-[#a28c84] focus:border-[#b45d45] focus:bg-white focus:ring-2 focus:ring-[#f8d6af]"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-[#765f58]">
+                  Email
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  className="w-full rounded-xl border border-[#eadbd1] bg-[#fffaf7] px-4 py-3 text-sm text-[#38231f] outline-none transition placeholder:text-[#a28c84] focus:border-[#b45d45] focus:bg-white focus:ring-2 focus:ring-[#f8d6af]"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-[#765f58]">
+                  Phone
+                </label>
+
+                <input
+                  type="tel"
+                  name="phone"
+                  inputMode="tel"
+                  placeholder="Enter your phone number"
+                  className="w-full rounded-xl border border-[#eadbd1] bg-[#fffaf7] px-4 py-3 text-sm text-[#38231f] outline-none transition placeholder:text-[#a28c84] focus:border-[#b45d45] focus:bg-white focus:ring-2 focus:ring-[#f8d6af]"
+                />
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold text-[#765f58]">
+                  Message
+                </label>
+
+                <textarea
+                  rows="5"
+                  name="message"
+                  placeholder="Tell us about your cake requirement..."
+                  required
+                  className="w-full resize-none rounded-xl border border-[#eadbd1] bg-[#fffaf7] px-4 py-3 text-sm text-[#38231f] outline-none transition placeholder:text-[#a28c84] focus:border-[#b45d45] focus:bg-white focus:ring-2 focus:ring-[#f8d6af]"
+                />
+              </div>
+
+              {/* Submit */}
               <button
                 type="submit"
-                className="w-full bg-pink-600 hover:bg-pink-700 text-white py-4 rounded-xl font-semibold transition"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#9b4d39] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#773d33] focus:outline-none focus:ring-2 focus:ring-[#f8d6af] focus:ring-offset-2"
               >
-                Send Message
+                <Send size={16} />
+                Open Email to Send
               </button>
 
             </form>
@@ -149,32 +238,44 @@ function Contact() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-gradient-to-r from-pink-500 to-rose-500 text-white py-16">
-        <div className="max-w-4xl mx-auto text-center px-6">
+      {/* CTA */}
+      <section className="bg-[#4c2626] px-5 py-14 text-[#fffaf7] md:py-16">
 
-          <h2 className="text-4xl font-bold mb-4">
-            Ready To Order Your Dream Cake?
+        <div className="mx-auto max-w-3xl text-center">
+
+          <span className="mb-3 inline-flex items-center gap-2 text-sm text-[#f8d6af]">
+            <CakeSliceIcon />
+            Let's create something special
+          </span>
+
+          <h2 className="font-serif text-3xl font-semibold md:text-4xl">
+            Ready to order your dream cake?
           </h2>
 
-          <p className="text-lg mb-8">
-            Contact us today and let us create the perfect cake for your special occasion.
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#f9e8d9]/75">
+            Contact us today and let us create the perfect cake for your
+            special occasion.
           </p>
 
           <a
             href="https://www.instagram.com/cakes_by_snehal_/"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white text-pink-600 px-8 py-4 rounded-full font-bold hover:bg-pink-100 transition"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#f8d6af] px-5 py-2.5 text-sm font-bold text-[#4c2626] transition hover:bg-white"
           >
             Order Now
+            <ArrowRight size={15} />
           </a>
 
         </div>
       </section>
 
-    </div>
+    </main>
   );
+}
+
+function CakeSliceIcon() {
+  return <span className="text-[#f8d6af]">✦</span>;
 }
 
 export default Contact;

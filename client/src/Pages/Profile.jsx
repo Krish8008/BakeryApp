@@ -1,96 +1,13 @@
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ClipboardList, Mail, ShieldCheck, UserCircle } from "lucide-react";
 
 function Profile() {
-
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const user = JSON.parse(
-    localStorage.getItem("user")
-  );
-
-  if (!token) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-pink-50">
-      <div className="bg-white shadow-lg rounded-xl p-8 text-center">
-        <h1 className="text-3xl font-bold text-red-600">
-          Login Required
-        </h1>
-
-        <p className="mt-3 text-gray-600">
-          Please login to access this page.
-        </p>
-
-        <Link
-          to="/login"
-          className="inline-block mt-6 bg-pink-600 text-white px-6 py-2 rounded-lg"
-        >
-          Go to Login
-        </Link>
-      </div>
-    </div>
-  );
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem("user") || "null"); } catch { localStorage.removeItem("user"); }
+  if (!token || !user) return <main className="grid min-h-screen place-items-center bg-[#fffaf7] px-5"><section className="w-full max-w-md rounded-3xl border border-[#eadbd1] bg-white p-8 text-center shadow-sm"><UserCircle className="mx-auto text-[#9b4d39]" size={42}/><h1 className="mt-4 font-serif text-3xl font-semibold">Your account is waiting</h1><p className="mt-2 text-[#7d6259]">Log in to view orders and account details.</p><Link to="/login" className="mt-6 inline-block rounded-full bg-[#4c2626] px-5 py-3 font-bold text-white">Log in</Link></section></main>;
+  const details = [["Name", user.name, UserCircle], ["Email", user.email, Mail], ["Account", user.role === "admin" ? "Administrator" : "Customer", ShieldCheck]];
+  return <main className="min-h-screen bg-[#fffaf7] px-5 py-10 md:py-16"><section className="mx-auto max-w-3xl overflow-hidden rounded-3xl border border-[#eadbd1] bg-white shadow-[0_8px_24px_rgba(73,38,33,.06)]"><header className="bg-[#4c2626] px-6 py-9 text-[#fffaf7] md:px-10"><p className="text-xs font-bold uppercase tracking-[.2em] text-[#f8d6af]">Your CakeCraft account</p><h1 className="mt-2 font-serif text-4xl font-semibold">Hello, {user.name?.split(" ")[0] || "there"}.</h1><p className="mt-2 text-[#f9e8d9]/80">Your details and celebration orders in one place.</p></header><div className="p-6 md:p-10"><div className="grid gap-4 sm:grid-cols-3">{details.map(([label, value, Icon]) => <div key={label} className="rounded-2xl bg-[#fff5ee] p-4"><Icon size={19} className="text-[#9b4d39]"/><p className="mt-3 text-xs font-bold uppercase tracking-wider text-[#7d6259]">{label}</p><p className="mt-1 break-words font-semibold text-[#38231f]">{value}</p></div>)}</div><div className="mt-8 flex flex-col gap-3 sm:flex-row"><button onClick={() => navigate("/my-bookings")} className="inline-flex items-center justify-center gap-2 rounded-full bg-[#4c2626] px-5 py-3 font-bold text-white hover:bg-[#683533]"><ClipboardList size={18}/> View my orders</button>{user.role === "admin" && <button onClick={() => navigate("/admin/orders")} className="rounded-full border border-[#d9c6ba] px-5 py-3 font-bold text-[#4c2626] hover:bg-[#fff5ee]">Open admin orders</button>}</div></div></section></main>;
 }
-
-  return (
-    <div className="max-w-2xl mx-auto mt-10 bg-white shadow-lg rounded-xl p-8">
-
-      <h1 className="text-3xl font-bold text-pink-600 mb-8">
-        My Profile
-      </h1>
-
-      <div className="space-y-5">
-
-        <div>
-          <label className="font-semibold">
-            Name
-          </label>
-
-          <p>{user.name}</p>
-        </div>
-
-        <div>
-          <label className="font-semibold">
-            Email
-          </label>
-
-          <p>{user.email}</p>
-        </div>
-
-        <div>
-          <label className="font-semibold">
-            Role
-          </label>
-
-          <p>{user.role}</p>
-        </div>
-
-      </div>
-
-      <div className="flex gap-4 mt-8">
-
-        <button
-          onClick={() => navigate("/my-bookings")}
-          className="bg-pink-600 text-white px-6 py-3 rounded"
-        >
-          My Orders
-        </button>
-
-        {user.role === "admin" && (
-          <button
-            onClick={() =>
-              navigate("/admin/orders")
-            }
-            className="bg-gray-800 text-white px-6 py-3 rounded"
-          >
-            Admin Panel
-          </button>
-        )}
-
-      </div>
-
-    </div>
-  );
-}
-
 export default Profile;

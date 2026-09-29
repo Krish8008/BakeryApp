@@ -12,10 +12,20 @@ const createBooking = async (req, res) => {
       deliveryDate,
     } = req.body;
 
+    const numericQuantity = Number(quantity);
+    const address = String(deliveryAddress || "").trim();
+    const phoneValue = String(phone || "").trim();
+    const requestedDate = new Date(`${deliveryDate}T00:00:00`);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (!cakeId || !Number.isInteger(numericQuantity) || numericQuantity < 1 || numericQuantity > 20 || !address || !/^[6-9]\d{9}$/.test(phoneValue) || Number.isNaN(requestedDate.getTime()) || requestedDate < today) {
+      return res.status(400).json({ success: false, message: "Please provide valid booking details." });
+    }
+
     // Check Cake
     const cake = await Cake.findById(cakeId);
 
-    if (!cake) {
+    if (!cake || !cake.available) {
       return res.status(404).json({
         success: false,
         message: "Cake not found",
@@ -23,17 +33,17 @@ const createBooking = async (req, res) => {
     }
 
     // Calculate Total Price
-    const totalPrice = cake.price * quantity;
+    const totalPrice = cake.price * numericQuantity;
 
     // Create Booking
     const booking = await Booking.create({
       user: req.user.id,
       cake: cakeId,
-      quantity,
+      quantity: numericQuantity,
       totalPrice,
-      deliveryAddress,
-      phone,
-      deliveryDate,
+      deliveryAddress: address,
+      phone: phoneValue,
+      deliveryDate: requestedDate,
     });
 
     res.status(201).json({
@@ -177,6 +187,11 @@ const getAllBookings = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
   try {
     const { orderStatus } = req.body;
+    const allowedStatuses = ["Pending", "Accepted", "Preparing", "Out For Delivery", "Delivered", "Cancelled"];
+
+    if (!allowedStatuses.includes(orderStatus)) {
+      return res.status(400).json({ success: false, message: "Invalid order status." });
+    }
 
     const booking = await Booking.findById(req.params.id);
 

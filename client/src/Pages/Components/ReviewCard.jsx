@@ -1,4 +1,3 @@
-import React from 'react';
 
 const StarRating = ({ rating = 0 }) => {
   return (

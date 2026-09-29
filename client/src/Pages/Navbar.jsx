@@ -1,306 +1,425 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, Cake, UserCircle, ShoppingCart } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import {
+  Cake,
+  LogOut,
+  Menu,
+  ShoppingBag,
+  UserCircle,
+  X,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import { useCart } from "../CartContext";
 
+const navClass = ({ isActive }) =>
+  `rounded-full px-3 py-2 text-sm font-semibold transition ${
+    isActive
+      ? "bg-[#fff1e5] text-[#773d33]"
+      : "text-[#634b43] hover:bg-[#fff1e5] hover:text-[#773d33]"
+  }`;
 
 const Navbar = ({ setToken, setUser }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
-  const navigate = useNavigate();   
+  const navigate = useNavigate();
+
+  // Ref for profile dropdown
+  const profileRef = useRef(null);
+
   const token = localStorage.getItem("token");
 
-  const user = JSON.parse(
-    localStorage.getItem("user") || "null"
-  );
-
   const { count } = useCart();
-  
+
+  let user = null;
+
+  try {
+    user = JSON.parse(localStorage.getItem("user") || "null");
+  } catch {
+    localStorage.removeItem("user");
+  }
+
+  // Close profile when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target)
+      ) {
+        setShowProfile(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setShowProfile(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+
+      document.removeEventListener(
+        "keydown",
+        handleEscape
+      );
+    };
+  }, []);
+
+  const closeMenu = () => {
+    setIsOpen(false);
+    setShowProfile(false);
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
+    setToken(null);
     setUser(null);
-    toast.success("Logout Successful");
-    navigate("/login");
+
+    closeMenu();
+
+    toast.success("You have been logged out.");
+
+    navigate("/");
   };
 
+  const commonLinks = (
+    <>
+      <NavLink
+        to="/"
+        end
+        className={navClass}
+        onClick={closeMenu}
+      >
+        Home
+      </NavLink>
+
+      <NavLink
+        to="/cakes"
+        className={navClass}
+        onClick={closeMenu}
+      >
+        Cakes
+      </NavLink>
+
+      <NavLink
+        to="/about"
+        className={navClass}
+        onClick={closeMenu}
+      >
+        Our story
+      </NavLink>
+
+      <NavLink
+        to="/contact"
+        className={navClass}
+        onClick={closeMenu}
+      >
+        Contact
+      </NavLink>
+    </>
+  );
+
   return (
-    <nav className="bg-pink-50 shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
+    <nav className="sticky top-0 z-50 border-b border-[#eadbd1] bg-[#fffaf7]/95 backdrop-blur">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+
+        <div className="flex h-[4.5rem] items-center justify-between gap-3">
+
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <Cake className="text-pink-600 w-8 h-8" />
-            <h1 className="text-2xl font-bold text-pink-600">
+          <Link
+            to="/"
+            onClick={closeMenu}
+            className="flex shrink-0 items-center gap-2"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#4c2626] text-[#f9d8b4]">
+              <Cake size={19} />
+            </span>
+
+            <span className="font-serif text-2xl font-semibold tracking-tight text-[#4c2626]">
               CakeCraft
-            </h1>
+            </span>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
-            <Link
-              to="/"
-              className="text-gray-700 hover:text-pink-600 font-medium"
-            >
-              Home
-            </Link>
+          {/* Desktop Navigation */}
+          <div className="hidden items-center gap-1 lg:flex">
+            {commonLinks}
 
-            <Link
-              to="/cakes"
-              className="text-gray-700 hover:text-pink-600 font-medium"
-            >
-              Cakes
-            </Link>
-
+            {/* Admin Links */}
             {user?.role === "admin" && (
+              <>
+                <NavLink
+                  to="/add-cake"
+                  className={navClass}
+                  onClick={closeMenu}
+                >
+                  Add cake
+                </NavLink>
+
+                <NavLink
+                  to="/admin/orders"
+                  className={navClass}
+                  onClick={closeMenu}
+                >
+                  Orders
+                </NavLink>
+              </>
+            )}
+
+            {/* My Orders */}
+            {token && (
+              <NavLink
+                to="/my-bookings"
+                className={navClass}
+                onClick={closeMenu}
+              >
+                My orders
+              </NavLink>
+            )}
+          </div>
+
+          {/* Desktop Right Side */}
+          <div className="hidden items-center gap-3 lg:flex">
+
+            {/* Cart */}
             <Link
-              to="/add-cake"
-              className="text-gray-700 hover:text-pink-600 font-medium"
+              to="/cart"
+              aria-label={`Cart, ${count} items`}
+              className="relative rounded-full p-2 text-[#4c2626] transition hover:bg-[#fff1e5]"
             >
-              Add Cake
-            </Link>
-          )}
+              <ShoppingBag size={21} />
 
-          {token && (
-            <Link
-              to="/my-bookings"
-              className="text-gray-700 hover:text-pink-600 font-medium"
-            >
-              My Orders
-            </Link>
-          )}
-
-          {user?.role === "admin" && (
-          <Link to="/admin/orders">
-            Orders
-          </Link>
-        )}
-
-            <Link
-              to="/about"
-              className="text-gray-700 hover:text-pink-600 font-medium"
-            >
-              About
-            </Link>
-
-            <Link
-              to="/contact"
-              className="text-gray-700 hover:text-pink-600 font-medium"
-            >
-              Contact
-            </Link>
-
-            <Link to="/cart" className="relative">
-              <ShoppingCart />
               {count > 0 && (
-                <span className="absolute -top-2 -right-3 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
-                  {count}
+                <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#a1423a] px-1 text-[10px] font-bold text-white">
+                  {count > 99 ? "99+" : count}
                 </span>
               )}
             </Link>
 
-            {token ? (
-  <div className="relative">
+            {/* Logged In User */}
+            {token && user ? (
+              <div
+                ref={profileRef}
+                className="relative"
+              >
 
-    <button
-      onClick={() => setShowProfile(!showProfile)}
-      className="flex items-center gap-2"
-    >
-      <UserCircle size={34} />
+                {/* Profile Button */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowProfile((open) => !open)
+                  }
+                  aria-expanded={showProfile}
+                  className="flex items-center gap-2 rounded-full border border-[#eadbd1] px-3 py-1.5 text-sm font-semibold text-[#4c2626] transition hover:bg-white"
+                >
+                  <UserCircle size={20} />
 
-      <span className="font-medium">
-        {user?.name}
-      </span>
-    </button>
+                  <span className="max-w-24 truncate">
+                    {user.name}
+                  </span>
+                </button>
 
-    {showProfile && (
-      <div className="absolute right-0 mt-3 w-60 bg-white shadow-xl rounded-xl border">
+                {/* Profile Dropdown */}
+                {showProfile && (
+                  <div className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-[#eadbd1] bg-white p-2 shadow-xl">
 
-        <div className="p-4 border-b">
+                    {/* User Info */}
+                    <div className="border-b border-[#f1e6df] px-3 py-3">
 
-          <h3 className="font-bold">
-            {user?.name}
-          </h3>
+                      <p className="font-semibold text-[#38231f]">
+                        {user.name}
+                      </p>
 
-          <p className="text-gray-500 text-sm">
-            {user?.email}
-          </p>
+                      <p className="truncate text-xs text-[#7d6259]">
+                        {user.email}
+                      </p>
 
-          <p className="text-pink-600 text-sm mt-1">
-            {user?.role.toUpperCase()}
-          </p>
+                    </div>
 
-        </div>
+                    {/* Profile */}
+                    <NavLink
+                      to="/profile"
+                      onClick={closeMenu}
+                      className="mt-1 block rounded-xl px-3 py-2 text-sm text-[#38231f] transition hover:bg-[#fff1e5]"
+                    >
+                      My profile
+                    </NavLink>
 
-        <Link
-          to="/profile"
-          className="block px-4 py-3 hover:bg-pink-50"
-        >
-          My Profile
-        </Link>
+                    {/* Orders */}
+                    <NavLink
+                      to="/my-bookings"
+                      onClick={closeMenu}
+                      className="block rounded-xl px-3 py-2 text-sm text-[#38231f] transition hover:bg-[#fff1e5]"
+                    >
+                      My orders
+                    </NavLink>
 
-        <Link
-          to="/my-bookings"
-          className="block px-4 py-3 hover:bg-pink-50"
-        >
-          My Orders
-        </Link>
+                    {/* Logout */}
+                    <button
+                      type="button"
+                      onClick={logout}
+                      className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm font-semibold text-[#a1423a] transition hover:bg-[#fff1e5]"
+                    >
+                      <LogOut size={16} />
+                      Log out
+                    </button>
 
-        {user?.role === "admin" && (
-          <Link
-            to="/admin/orders"
-            className="block px-4 py-3 hover:bg-pink-50"
-          >
-            Admin Orders
-          </Link>
-        )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                {/* Login */}
+                <NavLink
+                  to="/login"
+                  className="text-sm font-bold text-[#773d33]"
+                >
+                  Log in
+                </NavLink>
 
-        <button
-          onClick={logout}
-          className="w-full text-left px-4 py-3 text-red-500 hover:bg-red-50"
-        >
-          Logout
-        </button>
+                {/* Signup */}
+                <NavLink
+                  to="/signup"
+                  className="rounded-full bg-[#4c2626] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#683533]"
+                >
+                  Join us
+                </NavLink>
+              </>
+            )}
+          </div>
 
-      </div>
-    )}
+          {/* Mobile Right Side */}
+          <div className="flex items-center gap-1 lg:hidden">
 
-  </div>
-) : (
-  <>
-    <Link to="/login">Login</Link>
+            {/* Cart */}
+            <Link
+              to="/cart"
+              aria-label={`Cart, ${count} items`}
+              className="relative rounded-full p-2 text-[#4c2626]"
+            >
+              <ShoppingBag size={21} />
 
-    <Link to="/signup">Signup</Link>
-  </>
-)}
+              {count > 0 && (
+                <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#a1423a] px-1 text-[10px] font-bold text-white">
+                  {count > 99 ? "99+" : count}
+                </span>
+              )}
+            </Link>
+
+            {/* Mobile Menu Button */}
+            <button
+              type="button"
+              aria-label={
+                isOpen
+                  ? "Close navigation"
+                  : "Open navigation"
+              }
+              aria-expanded={isOpen}
+              onClick={() => setIsOpen((open) => !open)}
+              className="rounded-full p-2 text-[#4c2626] transition hover:bg-[#fff1e5]"
+            >
+              {isOpen ? <X /> : <Menu />}
+            </button>
 
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={isOpen}
-            className="md:hidden rounded-lg p-2 transition-colors hover:bg-pink-100 focus:outline-none focus:ring-2 focus:ring-pink-500"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? (
-              <X className="w-7 h-7 text-pink-600" />
-            ) : (
-              <Menu className="w-7 h-7 text-pink-600" />
-            )}
-          </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden border-t border-pink-100 py-3">
+          <div className="border-t border-[#eadbd1] py-3 lg:hidden">
+
             <div className="flex flex-col gap-1">
-              <Link
-                to="/"
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
-              >
-                Home
-              </Link>
-              <Link
-                to="/cakes"
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
-              >
-                Cakes
-              </Link>
-              {user?.role === "admin" && (
-                <Link
-                  to="/add-cake"
-                  onClick={() => setIsOpen(false)}
-                  className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
-                >
-                  Add Cake
-                </Link>
-              )}
+
+              {commonLinks}
+
+              {/* My Orders */}
               {token && (
-                <Link
+                <NavLink
                   to="/my-bookings"
-                  onClick={() => setIsOpen(false)}
-                  className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+                  className={navClass}
+                  onClick={closeMenu}
                 >
-                  My Orders
-                </Link>
+                  My orders
+                </NavLink>
               )}
+
+              {/* Admin */}
               {user?.role === "admin" && (
-                <Link
-                  to="/admin/orders"
-                  onClick={() => setIsOpen(false)}
-                  className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
-                >
-                  Admin Orders
-                </Link>
+                <>
+                  <NavLink
+                    to="/add-cake"
+                    className={navClass}
+                    onClick={closeMenu}
+                  >
+                    Add cake
+                  </NavLink>
+
+                  <NavLink
+                    to="/admin/orders"
+                    className={navClass}
+                    onClick={closeMenu}
+                  >
+                    Admin orders
+                  </NavLink>
+                </>
               )}
-              <Link
-                to="/about"
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
-              >
-                About
-              </Link>
-              <Link
-                to="/contact"
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
-              >
-                Contact
-              </Link>
-              <Link
-                to="/cart"
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
-              >
-                Cart{count > 0 ? ` (${count})` : ""}
-              </Link>
+
+              {/* Logged In */}
               {token ? (
                 <>
-                  <Link
+                  <NavLink
                     to="/profile"
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+                    className={navClass}
+                    onClick={closeMenu}
                   >
-                    My Profile
-                  </Link>
+                    My profile
+                  </NavLink>
+
                   <button
                     type="button"
-                    onClick={() => {
-                      setIsOpen(false);
-                      logout();
-                    }}
-                    className="rounded-lg px-3 py-2.5 text-left font-medium text-red-500 transition-colors hover:bg-red-50"
+                    onClick={logout}
+                    className="flex items-center gap-2 rounded-full px-3 py-2 text-left text-sm font-bold text-[#a1423a]"
                   >
-                    Logout
+                    <LogOut size={16} />
+                    Log out
                   </button>
                 </>
               ) : (
-                <>
-                  <Link
+                /* Logged Out */
+                <div className="mt-2 grid grid-cols-2 gap-2">
+
+                  <NavLink
                     to="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-lg px-3 py-2.5 font-medium text-gray-700 transition-colors hover:bg-pink-100 hover:text-pink-600"
+                    className="rounded-full border border-[#d9c6ba] px-3 py-2.5 text-center text-sm font-bold"
+                    onClick={closeMenu}
                   >
-                    Login
-                  </Link>
-                  <Link
+                    Log in
+                  </NavLink>
+
+                  <NavLink
                     to="/signup"
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-lg bg-pink-600 px-3 py-2.5 text-center font-medium text-white transition-colors hover:bg-pink-700"
+                    className="rounded-full bg-[#4c2626] px-3 py-2.5 text-center text-sm font-bold text-white"
+                    onClick={closeMenu}
                   >
-                    Signup
-                  </Link>
-                </>
+                    Join us
+                  </NavLink>
+
+                </div>
               )}
+
             </div>
           </div>
         )}
+
       </div>
     </nav>
   );

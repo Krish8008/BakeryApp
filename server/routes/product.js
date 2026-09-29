@@ -6,6 +6,7 @@ const Product = require("../models/product");
 const Review = require("../models/Review");
 const Booking = require("../models/Booking");
 const upload = require("../middleware/upload");
+const cloudinary = require("../config/cloudinary");
 const { protect } = require("../middleware/authMiddleware");
 const { adminOnly } = require("../middleware/adminMiddleware");
 
@@ -77,11 +78,32 @@ router.post(
 // Get All Cakes
 router.get("/cakes", async (req, res) => {
   try {
-    const cakes = await Product.find();
+    const requestedPage = Number.parseInt(req.query.page, 10);
+    const requestedLimit = Number.parseInt(req.query.limit, 10);
+    const page = Number.isFinite(requestedPage) && requestedPage > 0 ? requestedPage : 1;
+    // Keep catalogue requests intentionally small, even if a client sends a large limit.
+    const limit = Number.isFinite(requestedLimit) && requestedLimit > 0
+      ? Math.min(requestedLimit, 20)
+      : 20;
+    const totalCakes = await Product.countDocuments();
+    const totalPages = Math.max(1, Math.ceil(totalCakes / limit));
+    const safePage = Math.min(page, totalPages);
+    const cakes = await Product.find()
+      .sort({ createdAt: -1, _id: -1 })
+      .skip((safePage - 1) * limit)
+      .limit(limit);
 
     res.status(200).json({
       success: true,
       cakes,
+      pagination: {
+        page: safePage,
+        limit,
+        totalCakes,
+        totalPages,
+        hasNextPage: safePage < totalPages,
+        hasPreviousPage: safePage > 1,
+      },
     });
   } catch (error) {
     res.status(500).json({
@@ -249,30 +271,102 @@ router.delete("/cakes/:id/reviews/:reviewId", protect, async (req, res) => {
   }
 });
 
-router.delete("/cakes/:id/delete", protect, adminOnly, async (req, res) => {
-  try {
-    const deletedCake = await Product.findByIdAndDelete(
-      req.params.id
-    );
+// router.delete("/cakes/:id/delete", protect, adminOnly, async (req, res) => {
+//   try {
+//     const deletedCake = await Product.findByIdAndDelete(
+//       req.params.id
+//     );
 
-    if (!deletedCake) {
-      return res.status(404).json({
+//     if (!deletedCake) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Cake not found",
+//       });
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Cake deleted successfully",
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// });
+
+
+router.delete(
+  "/cakes/:id/delete",
+  protect,
+  adminOnly,
+  async (req, res) => {
+    try {
+      const cake = await Product.findById(req.params.id);
+
+      if (!cake) {
+        return res.status(404).json({
+          success: false,
+          message: "Cake not found",
+        });
+      }
+
+      // Delete images from Cloudinary
+      if (cake.images && cake.images.length > 0) {
+        for (const imageUrl of cake.images) {
+          try {
+            const parts = imageUrl.split("/");
+
+            const uploadIndex = parts.indexOf("upload");
+
+            if (uploadIndex !== -1) {
+              let publicId = parts
+                .slice(uploadIndex + 1)
+                .join("/");
+
+              // Remove transformation/version folders
+              publicId = publicId.replace(
+                /^v\d+\//,
+                ""
+              );
+
+              // Remove file extension
+              publicId = publicId.replace(
+                /\.[^/.]+$/,
+                ""
+              );
+
+              await cloudinary.uploader.destroy(
+                publicId
+              );
+
+            }
+          } catch (cloudinaryError) {
+            console.error(
+              "Cloudinary delete failed:",
+              cloudinaryError.message
+            );
+          }
+        }
+      }
+
+      // Delete product from MongoDB
+      await Product.findByIdAndDelete(req.params.id);
+
+      res.status(200).json({
+        success: true,
+        message: "Cake and Cloudinary images deleted successfully",
+      });
+    } catch (error) {
+
+      res.status(500).json({
         success: false,
-        message: "Cake not found",
+        message: error.message,
       });
     }
-
-    res.status(200).json({
-      success: true,
-      message: "Cake deleted successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
   }
-});
+);
 
 
 router.put(

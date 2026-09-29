@@ -8,7 +8,12 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const name = String(req.body.name || "").trim();
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const password = String(req.body.password || "");
+    if (name.length < 2 || !/^\S+@\S+\.\S+$/.test(email) || password.length < 8) {
+      return res.status(400).json({ success: false, message: "Enter your name, a valid email, and a password of at least 8 characters." });
+    }
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -61,7 +66,11 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const password = String(req.body.password || "");
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: "Email and password are required." });
+    }
 
     const user = await User.findOne({ email });
 

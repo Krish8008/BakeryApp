@@ -1,18 +1,17 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
-
-  useEffect(() => {
+  const [cart, setCart] = useState(() => {
     try {
       const stored = localStorage.getItem("cart");
-      if (stored) setCart(JSON.parse(stored));
+      return stored ? JSON.parse(stored) : [];
     } catch (e) {
       console.error("Failed to parse cart from localStorage", e);
+      return [];
     }
-  }, []);
+  });
 
   useEffect(() => {
     try {
@@ -27,7 +26,7 @@ export const CartProvider = ({ children }) => {
     setCart((prev) => {
       const existing = prev.find((i) => i.id === id);
       if (existing) {
-        return prev.map((i) => (i.id === id ? { ...i, qty: i.qty + qty } : i));
+        return prev.map((i) => (i.id === id ? { ...i, qty: Math.min(20, i.qty + qty) } : i));
       }
       return [
         ...prev,
@@ -48,7 +47,8 @@ export const CartProvider = ({ children }) => {
 
   const updateQty = (id, qty) => {
     if (qty <= 0) return removeItem(id);
-    setCart((prev) => prev.map((i) => (i.id === id ? { ...i, qty } : i)));
+    const safeQuantity = Math.min(20, Math.floor(Number(qty)) || 1);
+    setCart((prev) => prev.map((i) => (i.id === id ? { ...i, qty: safeQuantity } : i)));
   };
 
   const clearCart = () => setCart([]);

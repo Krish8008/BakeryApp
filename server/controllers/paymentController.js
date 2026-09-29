@@ -7,7 +7,17 @@ const Cake = require("../models/product");
 // Create Razorpay Order
 module.exports.createOrder = async (req, res) => {
   try {
-    const { amount } = req.body;
+    const { cakeId, quantity } = req.body;
+    const numericQuantity = Number(quantity);
+
+    if (!cakeId || !Number.isInteger(numericQuantity) || numericQuantity < 1 || numericQuantity > 20) {
+      return res.status(400).json({ success: false, message: "Please select a valid cake quantity." });
+    }
+
+    const cake = await Cake.findById(cakeId);
+    if (!cake || !cake.available) {
+      return res.status(404).json({ success: false, message: "This cake is no longer available." });
+    }
 
     // Ensure Razorpay is configured
     if (!razorpay) {
@@ -19,7 +29,8 @@ module.exports.createOrder = async (req, res) => {
     }
 
     const options = {
-      amount: amount * 100,
+      // Price is always calculated from the product record, never from browser input.
+      amount: Math.round(cake.price * numericQuantity * 100),
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };
@@ -87,17 +98,42 @@ module.exports.verifyPayment = async (req, res) => {
       });
     }
 
+    const numericQuantity = Number(quantity);
+    const phoneValue = String(phone || "").trim();
+    const address = String(deliveryAddress || "").trim();
+    const requestedDate = new Date(`${deliveryDate}T00:00:00`);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (!cakeId || !Number.isInteger(numericQuantity) || numericQuantity < 1 || numericQuantity > 20 || !address || !/^[6-9]\d{9}$/.test(phoneValue) || Number.isNaN(requestedDate.getTime()) || requestedDate < today) {
+      return res.status(400).json({ success: false, message: "Please provide valid delivery details." });
+    }
+
     // Find Cake
     const cake = await Cake.findById(cakeId);
 
-    if (!cake) {
+    if (!cake || !cake.available) {
       return res.status(404).json({
         success: false,
         message: "Cake not found",
       });
     }
 
-    const totalPrice = cake.price * quantity;
+    const totalPrice = cake.price * numericQuantity;
+
+    if (!razorpay) {
+      return res.status(500).json({ success: false, message: "Payments are not configured on the server." });
+    }
+
+    const razorpayOrder = await razorpay.orders.fetch(razorpay_order_id);
+    if (razorpayOrder.amount !== Math.round(totalPrice * 100) || razorpayOrder.currency !== "INR") {
+      return res.status(400).json({ success: false, message: "Payment amount does not match this order." });
+    }
+
+    const existingBooking = await Booking.findOne({ razorpayPaymentId: razorpay_payment_id });
+    if (existingBooking) {
+      return res.status(409).json({ success: false, message: "This payment has already been used for an order." });
+    }
 
     // Create Booking
     const booking = await Booking.create({
@@ -105,13 +141,13 @@ module.exports.verifyPayment = async (req, res) => {
 
       cake: cakeId,
 
-      quantity,
+      quantity: numericQuantity,
 
       totalPrice,
 
-      deliveryAddress,
+      deliveryAddress: address,
 
-      phone,
+      phone: phoneValue,
 
       deliveryDate,
 

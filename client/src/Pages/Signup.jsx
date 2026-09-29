@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { API_URL } from "../config/api";
 import toast from "react-hot-toast";
 
-function Signup() {
+function Signup({ setToken, setUser: setAuthenticatedUser }) {
   const navigate = useNavigate();
 
   const [user, setUser] = useState({
@@ -46,6 +46,9 @@ function Signup() {
           "user",
           JSON.stringify(data.user)
         );
+
+        setToken(data.token);
+        setAuthenticatedUser(data.user);
 
         toast.success("Signup Successful");
         navigate("/");

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_URL } from "../config/api";
 import toast from "react-hot-toast";
@@ -20,11 +20,7 @@ function EditCake() {
     eggless: false,
   });
 
-  useEffect(() => {
-    fetchCake();
-  }, []);
-
-  const fetchCake = async () => {
+  const fetchCake = useCallback(async () => {
     try {
       const response = await fetch(
         `${API_URL}/api/cakes/${id}`
@@ -38,7 +34,11 @@ function EditCake() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchCake();
+  }, [fetchCake]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

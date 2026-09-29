@@ -27,12 +27,21 @@ import CartPage from "./Pages/Cart";
 
 function App() {
 
+  const getStoredUser = () => {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "null");
+    } catch {
+      localStorage.removeItem("user");
+      return null;
+    }
+  };
+
   const [token, setToken] = useState(
     localStorage.getItem("token")
 );
 
 const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user"))
+    getStoredUser
 );
 
   useEffect(() => {
@@ -88,7 +97,7 @@ const [user, setUser] = useState(
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cakes" element={<Cakes />} />
-          <Route path="/signup" element={<Signup/>} />
+          <Route path="/signup" element={<Signup setToken={setToken} setUser={setUser} />} />
           <Route path="/login" element={<Login setToken={setToken} setUser={setUser}  />} />
           <Route path="/my-bookings" element={<MyBookings />} />
           <Route path="/profile" element={<Profile/>} />
@@ -124,7 +133,7 @@ const [user, setUser] = useState(
           <Route path="/custom-orders" element={<CustomOrders />} />
           <Route path="/order" element={<Order />} /> */}
         </Routes>
-         {token && <ChatWidget user={user}/>} 
+         /* {token && <ChatWidget user={user}/>}  */
       </BrowserRouter>
     </CartProvider>
   );
