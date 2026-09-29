@@ -151,6 +151,16 @@ function ShowCake() {
   // =========================
   // LOADING
   // =========================
+
+    useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
+  }, []);
+
+  
   if (!cake) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#fffaf7]">
